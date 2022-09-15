@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="USER_HOME" value="$/home/ubuntu/app/logs"/>
+    <property name="log.name" value="another-disk"/>
+    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${USER_HOME}/logstash/${log.name}.another-disk.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+    <appender name="FILE-ENGINE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${USER_HOME}/${log.name}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}/archived/${log.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36}-[PROCESS_ID=%X{PROCESS_ID}] -%msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+    <logger name="ru.gpb" level="INFO" additivity="false">
+        <appender-ref ref="FILE-ENGINE"/>
+        <appender-ref ref="STASH"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="FILE-ENGINE"/>
+        <appender-ref ref="STASH"/>
+    </root>
+</configuration>
