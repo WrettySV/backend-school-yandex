@@ -1,0 +1,14 @@
+server:
+  address: 0.0.0.0
+  port: 80
+
+
+spring:
+  application:
+    name: another-disk
+  datasource:
+#    url: jdbc:postgresql://10.22.4.103:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Ab123456
+    driverClassName: org.postgresql.Driver
